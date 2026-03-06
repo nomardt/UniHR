@@ -72,9 +72,9 @@ namespace UniHR
         // Бюрократия
         public void RequestSoftwareBuy(string software)
         {
-            Console.WriteLine($"\n[БЮРОКРАТИЯ] {FullName} запрашивает '{software}'.");
+            Console.WriteLine($"[БЮРОКРАТИЯ] {FullName} запрашивает '{software}'.");
             Console.WriteLine(" -> Процесс: Сбор подписей зав.кафедрой/декан -> IT-отдел -> Закупки -> Бухгалтерия -> Ректорат/Фин директор.");
-            Console.WriteLine(" -> Ожидаемое время согласования: 10-15 рабочих дней.");
+            Console.WriteLine(" -> Ожидаемое время согласования: 15-25 рабочих дней.");
         }
 
         // Коммуникация

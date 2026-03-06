@@ -15,12 +15,12 @@ namespace SynergyHR
 
             Console.WriteLine("== Добро пожаловать в HR-систему университета Синергия! ==");
 
-            universityStaff.Add(new Worker());
+            // universityStaff.Add(new Worker());
 
             int count = 0;
             while (true)
             {
-                Console.Write("Сколько сотрудников добавить в систему?");
+                Console.Write("Укажите число сотрудников для добавления в систему: ");
                 if (int.TryParse(Console.ReadLine(), out count) && count >= 0) break;
             }
 
@@ -28,14 +28,32 @@ namespace SynergyHR
             {
                 Console.WriteLine($"--- Сотрудник {i + 1} ---");
 
-                Console.Write("ФИО: ");
-                string name = Console.ReadLine() ?? "";
+                string name;
+                while (true)
+                {
+                    Console.Write("ФИО: ");
+                    name = Console.ReadLine() ?? "";
+                    if (!string.IsNullOrWhiteSpace(name)) break;
+                    Console.WriteLine("Ошибка: Поле ФИО не может быть пустым.");
+                }
 
-                Console.Write("Факультет или Отдел (например, Кафедра Цифровой Экономики): ");
-                string department = Console.ReadLine() ?? "";
+                string department;
+                while (true)
+                {
+                    Console.Write("Факультет или Отдел (например, \"Кафедра Цифровой Экономики\"): ");
+                    department = (Console.ReadLine() ?? "").Trim();
+                    if (!string.IsNullOrWhiteSpace(department)) break;
+                    Console.WriteLine("Ошибка: Укажите факультет или отдел.");
+                }
 
-                Console.Write("Должность: ");
-                string position = Console.ReadLine() ?? "";
+                string position;
+                while (true)
+                {
+                    Console.Write("Должность: ");
+                    position = (Console.ReadLine() ?? "").Trim();
+                    if (!string.IsNullOrWhiteSpace(department)) break;
+                    Console.WriteLine("Ошибка: Укажите факультет или отдел.");
+                }
 
                 double salary = 0;
                 while (true)
@@ -47,8 +65,19 @@ namespace SynergyHR
                 DateTime hireDate = DateTime.Now;
                 while (true)
                 {
-                    Console.Write("Дата приема (ДД.ММ.ГГГГ): ");
-                    if (DateTime.TryParseExact(Console.ReadLine(), "dd.mm.yyyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out hireDate)) break;
+                    Console.Write("Дата приема (формат - ДД.ММ.ГГГГ) [Нажмите Enter для текущей даты]: ");
+                    string input = (Console.ReadLine() ?? "").Trim();
+
+                    if (string.IsNullOrWhiteSpace(input))
+                    {
+                        Console.WriteLine($"По умолчанию установлена текущая дата: {hireDate:dd.MM.yyyy}");
+                        break;
+                    }
+
+                    // Нужно использовать ММ вместо мм, чтобы указать месяцы вместо минут
+                    if (DateTime.TryParseExact(input, "dd.MM.yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out hireDate)) break;
+
+                    Console.WriteLine("Ошибка: Убедитесь, что вводите дату строго в формате ДД.ММ.ГГГГ (например, 01.01.2000).");
                 }
 
                 universityStaff.Add(new Worker(name, position, salary, hireDate, department));
@@ -60,6 +89,24 @@ namespace SynergyHR
             {
                 worker.DisplayInfo();
             }
+
+            // Под кейс-задачу 5
+            Console.WriteLine("\n== ДЕМО ПРОБЛЕМ ОРГ ПРОЦЕССОВ ==");
+            if (universityStaff.Count >= 2) {
+                Worker first = universityStaff[0];
+                Worker last = universityStaff[universityStaff.Count - 1];
+
+                // Демо бюрократия
+                first.RequestSoftwareBuy("Приобрести лицензию Битрикс24");
+                // Демо разрозненность
+                first.CollaborateWith(last);
+            } else
+            {
+                Console.WriteLine("Ошибка: Добавьте мин 1 сотрудника (помимо стажера) для демо");
+            }
+
+            Console.WriteLine("\n\nПрограмма завершила работу, введите любой символ для выхода...");
+            Console.ReadLine(); // Чтобы программа не завершилась сразу
         }
     }
 }

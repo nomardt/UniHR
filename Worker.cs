@@ -25,7 +25,7 @@ namespace UniHR
         public double Salary
         {
             get {return _salary;}
-            set {_salary = value > 0 ? value : 20000;}
+            set {_salary = value > 0 ? value : 27093;}
         }
 
         public string Position {get; set;}

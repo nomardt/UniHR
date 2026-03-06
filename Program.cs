@@ -101,14 +101,14 @@ namespace SynergyHR
                 Console.WriteLine("Ошибка: введите корректное число (0 и больше).");
             }
 
-            Console.WriteLine($"\nРезультаты поиска (сотрудники со стажем более {thresholdYears} лет): ");
+            Console.WriteLine($"\nРезультаты поиска (сотрудники со стажем минимум {thresholdYears} лет): ");
             bool isFound = false;
 
             foreach (var worker in universityStaff)
             {
                 var exp = worker.GetExperience();
 
-                if (exp.Years > thresholdYears)
+                if (exp.Years >= thresholdYears)
                 {
                     Console.WriteLine($"- {worker.FullName} (Стаж: {exp.Years} лет, {exp.Months} мес.)");
                     isFound = true;

@@ -50,6 +50,16 @@ namespace UniHR
             Department = department;
         }
 
+        // Частичный конструктор с примерной оценкой ЗП
+        public Worker(string fullName, string department, string position, DateTime hireDate) : base(fullName)
+        {
+            Position = position;
+            Department = department;
+            HireDate = hireDate;
+
+            Salary = EstimateSalaryFor2026(position);
+        }
+
         ~Worker()
         {
             Console.WriteLine($"Система: Данные пользователя {FullName} удалены!");
@@ -61,12 +71,36 @@ namespace UniHR
             Console.WriteLine($"ФИО: {FullName, -20} | Факультет: {Department, -20} | Должность: {Position, -20} | ЗП: {Salary, -8:F2} | Выход на работу: {HireDate:dd.MM.yyyy}");
         }
 
+        private double EstimateSalaryFor2026(string positionInput)
+        {
+            // Переводим ввод в нижний регистр для точного поиска
+            string pos = positionInput.ToLower();
+
+            if (pos.Contains("методист")) return 80000.00;
+            if (pos.Contains("ассистент")) return 35000.00;
+            if (pos.Contains("старший преподаватель")) return 100000.00;
+            if (pos.Contains("доцент")) return 120000.00;
+            if (pos.Contains("профессор")) return 150000.00;
+            if (pos.Contains("декан") || pos.Contains("зав")) return 200000.00;
+            if (pos.Contains("стажер") || pos.Contains("практикант")) return 20000.00;
+
+            // Если должность неизвестна, ставим среднюю ЗП выпускников Синергии по Роструду
+            return 94800.00; 
+        }
+
         public (int Years, int Months, int Days) GetExperience()
         {
             DateTime now = DateTime.Now;
             TimeSpan workspan = now - HireDate;
             DateTime zeroTime = new DateTime(1, 1, 1);
             return ((zeroTime + workspan).Year - 1, (zeroTime + workspan).Month - 1, (zeroTime + workspan).Day - 1);
+        }
+
+        public void UpdatePositionAndSalary(string newPosition, double newSalary)
+        {
+            Position = newPosition;
+            Salary = newSalary;
+            Console.WriteLine($"Система: {FullName} переведен на должность \"{Position}\" с окладом {Salary} руб");
         }
 
         // Бюрократия

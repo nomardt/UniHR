@@ -3,36 +3,58 @@ using System.ComponentModel;
 
 namespace UniHR
 {
-    // Abstraction
+    /// <summary>
+    /// [АБСТРАКЦИЯ] Базовый класс, описывающий общую концепцию Person в системе.
+    /// Скрывает детали реализации, предоставляя общий интерфейс для наследников.
+    /// </summary>
     public abstract class Person
     {
-        public string FullName {get; set;}
+        /// <summary>Полное имя (ФИО) человека.</summary>
+        public string FullName { get; set; }
 
+        /// <summary>
+        /// Инициализирует новый экземпляр класса <see cref="Person"/>.
+        /// </summary>
+        /// <param name="fullName">ФИО человека.</param>
         public Person(string fullName)
         {
             FullName = fullName;
         }
 
-        // Polymorphism - этот метод должен быть имплементирован в в дочерних классах
+        /// <summary>
+        /// [ПОЛИМОРФИЗМ] Абстрактный метод вывода информации. 
+        /// Обязует все дочерние классы реализовать собственную логику отображения данных.
+        /// </summary>
         public abstract void DisplayInfo();
     }
 
-    // Inheritance
+    /// <summary>
+    /// [НАСЛЕДОВАНИЕ] Класс сотрудника университета. 
+    /// Наследует базовые атрибуты от <see cref="Person"/> и расширяет их профессиональными полями.
+    /// </summary>
     public class Worker : Person
     {
-        // Incapsulation
         private double _salary;
+
+        /// <summary>
+        /// [ИНКАПСУЛЯЦИЯ] Оклад сотрудника. 
+        /// Прямой доступ к полю _salary закрыт. Свойство содержит встроенную логику валидации:
+        /// недопустимо устанавливать значение ниже или равное 0 (сбрасывается до МРОТ).
+        /// </summary>
         public double Salary
         {
-            get {return _salary;}
-            set {_salary = value > 0 ? value : 27093;}
+            get { return _salary; }
+            set { _salary = value > 0 ? value : 27093; }
         }
 
-        public string Position {get; set;}
-        public string Department {get; set;}
-        public DateTime HireDate {get; set;}
+        public string Position { get; set; }
+        public string Department { get; set; }
+        public DateTime HireDate { get; set; }
 
-        // The defualt constructor
+        /// <summary>
+        /// [ПОЛИМОРФИЗМ - Перегрузка] Конструктор по умолчанию.
+        /// Создает базовую "заглушку" в виде стажера с минимальной ставкой.
+        /// </summary>
         public Worker() : base("Intern (not specified)")
         {
             Position = "Стажер";
@@ -41,8 +63,12 @@ namespace UniHR
             HireDate = DateTime.Now;
         }
 
-        // Полный constructor
-        public Worker(string fullName, string position, double salary, DateTime hireDate, string department) : base(fullName)
+        /// <summary>
+        /// [ПОЛИМОРФИЗМ - Перегрузка] Полный конструктор.
+        /// Используется для жесткого задания всех параметров сотрудника вручную.
+        /// </summary>
+        public Worker(string fullName, string position, double salary, DateTime hireDate, string department) 
+            : base(fullName)
         {
             Position = position;
             Salary = salary;
@@ -50,30 +76,42 @@ namespace UniHR
             Department = department;
         }
 
-        // Частичный конструктор с примерной оценкой ЗП
-        public Worker(string fullName, string department, string position, DateTime hireDate) : base(fullName)
+        /// <summary>
+        /// [ПОЛИМОРФИЗМ - Перегрузка] "Умный" частичный конструктор.
+        /// Автоматически вычисляет рыночную заработную плату на основе переданной должности.
+        /// </summary>
+        public Worker(string fullName, string department, string position, DateTime hireDate) 
+            : base(fullName)
         {
             Position = position;
             Department = department;
             HireDate = hireDate;
-
             Salary = EstimateSalaryFor2026(position);
         }
 
+        /// <summary>
+        /// Деструктор (финализатор). Вызывается сборщиком мусора перед очисткой памяти.
+        /// </summary>
         ~Worker()
         {
             Console.WriteLine($"Система: Данные пользователя {FullName} удалены!");
         }
 
-        // Методы
+        /// <summary>
+        /// [ПОЛИМОРФИЗМ - Переопределение] Выводит отформатированную карточку сотрудника в консоль.
+        /// </summary>
         public override void DisplayInfo()
         {
             Console.WriteLine($"ФИО: {FullName, -20} | Факультет: {Department, -20} | Должность: {Position, -20} | ЗП: {Salary, -8:F2} | Выход на работу: {HireDate:dd.MM.yyyy}");
         }
 
+        /// <summary>
+        /// Внутренний метод для оценки актуальной рыночной заработной платы в Синергии на 2026 год.
+        /// </summary>
+        /// <param name="positionInput">Название должности для анализа.</param>
+        /// <returns>Примерный оклад в рублях.</returns>
         private double EstimateSalaryFor2026(string positionInput)
         {
-            // Переводим ввод в нижний регистр для точного поиска
             string pos = positionInput.ToLower();
 
             if (pos.Contains("методист")) return 80000.00;
@@ -84,10 +122,13 @@ namespace UniHR
             if (pos.Contains("декан") || pos.Contains("зав")) return 200000.00;
             if (pos.Contains("стажер") || pos.Contains("практикант")) return 20000.00;
 
-            // Если должность неизвестна, ставим среднюю ЗП выпускников Синергии по Роструду
             return 94800.00; 
         }
 
+        /// <summary>
+        /// Вычисляет точный календарный стаж работы сотрудника с момента приема на работу.
+        /// </summary>
+        /// <returns>Кортеж, содержащий количество полных лет, месяцев и дней.</returns>
         public (int Years, int Months, int Days) GetExperience()
         {
             DateTime now = DateTime.Now;
@@ -96,6 +137,11 @@ namespace UniHR
             return ((zeroTime + workspan).Year - 1, (zeroTime + workspan).Month - 1, (zeroTime + workspan).Day - 1);
         }
 
+        /// <summary>
+        /// Обновляет кадровые данные сотрудника (перевод на новую должность с изменением оклада).
+        /// </summary>
+        /// <param name="newPosition">Новая должность.</param>
+        /// <param name="newSalary">Новый оклад.</param>
         public void UpdatePositionAndSalary(string newPosition, double newSalary)
         {
             Position = newPosition;
@@ -103,7 +149,12 @@ namespace UniHR
             Console.WriteLine($"Система: {FullName} переведен на должность \"{Position}\" с окладом {Salary} руб");
         }
 
-        // Бюрократия
+        // --- БЛОК СИМУЛЯЦИИ КОРПОРАТИВНЫХ БИЗНЕС-ПРОЦЕССОВ ---
+
+        /// <summary>
+        /// Симулирует процесс закупки ПО, демонстрируя проблему бюрократии и длинных цепочек согласования.
+        /// </summary>
+        /// <param name="software">Название запрашиваемого программного обеспечения.</param>
         public void RequestSoftwareBuy(string software)
         {
             Console.WriteLine($"[БЮРОКРАТИЯ] {FullName} запрашивает '{software}'.");
@@ -111,7 +162,10 @@ namespace UniHR
             Console.WriteLine("Ожидаемое время согласования: 15-25 рабочих дней.");
         }
 
-        // Коммуникация
+        /// <summary>
+        /// Симулирует попытку кросс-функционального взаимодействия, демонстрируя проблему разрозненности факультетов.
+        /// </summary>
+        /// <param name="colleague">Сотрудник, с которым инициируется связь.</param>
         public void CollaborateWith(Worker colleague)
         {
             Console.WriteLine($"\n[КОММУНИКАЦИЯ] Попытка связи: {FullName} ({Department}) <-> {colleague.FullName} ({colleague.Department})");

@@ -6,7 +6,7 @@ namespace UniHR.Tests
 {
     public class WorkerTests
     {
-        // 1. Testing ENCAPSULATION (Task 4 Requirement)
+        // 1. Testing ENCAPSULATION
         // Verifies that a negative salary is blocked and set to the 27093 default
         [Fact]
         public void SalaryEncapsulation_NegativeValue_SetsDefaultMinimum()
@@ -21,7 +21,7 @@ namespace UniHR.Tests
             Assert.Equal(27093.00, worker.Salary);
         }
 
-        // 2. Testing METHODS / LOGIC (Task 4 Requirement)
+        // 2. Testing METHODS / LOGIC
         // Verifies the automatic salary estimation for a "методист"
         [Fact]
         public void PartialConstructor_EstimatesSalaryCorrectly()
@@ -34,7 +34,7 @@ namespace UniHR.Tests
             Assert.Equal(80000.00, worker.Salary);
         }
 
-        // 3. Testing BEHAVIOR / STATE (Task 4 Requirement)
+        // 3. Testing BEHAVIOR / STATE
         // Verifies that the exact experience logic works accurately
         [Fact]
         public void GetExperience_CalculatesExactYearsCorrectly()

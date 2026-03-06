@@ -152,30 +152,32 @@ namespace UniHR
         // --- БЛОК СИМУЛЯЦИИ КОРПОРАТИВНЫХ БИЗНЕС-ПРОЦЕССОВ ---
 
         /// <summary>
-        /// Симулирует процесс закупки ПО, демонстрируя проблему бюрократии и длинных цепочек согласования.
+        /// Симулирует запрос бюджета на инновации, демонстрируя сложность финансового комплаенса 
+        /// и задержки в ERP-системе при согласовании инвестиций.
         /// </summary>
-        /// <param name="software">Название запрашиваемого программного обеспечения.</param>
-        public void RequestSoftwareBuy(string software)
+        /// <param name="projectDetails">Описание инновационного проекта или статьи расходов.</param>
+        public void RequestInnovationBudget(string projectDetails)
         {
-            Console.WriteLine($"[БЮРОКРАТИЯ] {FullName} запрашивает '{software}'.");
-            Console.WriteLine("Процесс: Сбор подписей зав.кафедрой/декан -> IT-отдел -> Закупки -> Бухгалтерия -> Ректорат/Фин директор.");
-            Console.WriteLine("Ожидаемое время согласования: 15-25 рабочих дней.");
+            Console.WriteLine($"[ФИНАНСОВЫЙ КОМПЛАЕНС] {FullName} запрашивает бюджет на: '{projectDetails}'.");
+            Console.WriteLine("Процесс: Риск-менеджмент -> Финансовый комитет -> Одобрение бюджета в ERP.");
+            Console.WriteLine("Статус: Заявка отложена до следующего цикла квартального планирования.");
         }
 
         /// <summary>
-        /// Симулирует попытку кросс-функционального взаимодействия, демонстрируя проблему разрозненности факультетов.
+        /// Демонстрирует проблему "Data Silos" (изолированности данных) и отсутствия единого API 
+        /// при попытке межкафедрального обмена информацией.
         /// </summary>
-        /// <param name="colleague">Сотрудник, с которым инициируется связь.</param>
-        public void CollaborateWith(Worker colleague)
+        /// <param name="colleague">Сотрудник смежного подразделения, к данным которого запрашивается доступ.</param>
+        public void RequestCrossFacultyData(Worker colleague)
         {
-            Console.WriteLine($"\n[КОММУНИКАЦИЯ] Попытка связи: {FullName} ({Department}) <-> {colleague.FullName} ({colleague.Department})");
+            Console.WriteLine($"\n[DATA SILOS] Запрос данных: {FullName} ({Department}) <-> {colleague.FullName} ({colleague.Department})");
             if (this.Department == colleague.Department)
             {
-                Console.WriteLine("Успех: Быстрая связь внутри одного факультета.");
+                Console.WriteLine("Успех: Прямой доступ к локальной базе данных кафедры.");
             }
             else
             {
-                Console.WriteLine("Ошибка гибкости: Слабая горизонтальная связь. Требуется официальная служебная записка через руководителей.");
+                Console.WriteLine("Ошибка интеграции: Отсутствует внутренний API. Доступ к базам других факультетов заблокирован политиками безопасности.");
             }
         }
     }

@@ -127,10 +127,10 @@ namespace SynergyHR
                 Worker first = universityStaff[0];
                 Worker last = universityStaff[universityStaff.Count - 1];
 
-                // Демо бюрократия
-                first.RequestSoftwareBuy("Приобрести лицензию Битрикс24");
-                // Демо разрозненность
-                first.CollaborateWith(last);
+                // Демо: Сложный финансовый комплаенс
+                first.RequestInnovationBudget("Доступ к API OpenAI для студентов");
+                // Демо: Изолированность данных
+                first.RequestCrossFacultyData(last);
             } else
             {
                 Console.WriteLine("Ошибка: Добавьте мин 1 сотрудника (помимо стажера) для демо");

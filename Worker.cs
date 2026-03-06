@@ -52,7 +52,7 @@ namespace UniHR
 
         ~Worker()
         {
-            Console.WriteLine($"[Система] Данные пользователя {FullName} удалены!");
+            Console.WriteLine($"Система: Данные пользователя {FullName} удалены!");
         }
 
         // Методы
@@ -73,8 +73,8 @@ namespace UniHR
         public void RequestSoftwareBuy(string software)
         {
             Console.WriteLine($"[БЮРОКРАТИЯ] {FullName} запрашивает '{software}'.");
-            Console.WriteLine(" -> Процесс: Сбор подписей зав.кафедрой/декан -> IT-отдел -> Закупки -> Бухгалтерия -> Ректорат/Фин директор.");
-            Console.WriteLine(" -> Ожидаемое время согласования: 15-25 рабочих дней.");
+            Console.WriteLine("Процесс: Сбор подписей зав.кафедрой/декан -> IT-отдел -> Закупки -> Бухгалтерия -> Ректорат/Фин директор.");
+            Console.WriteLine("Ожидаемое время согласования: 15-25 рабочих дней.");
         }
 
         // Коммуникация
@@ -83,11 +83,11 @@ namespace UniHR
             Console.WriteLine($"\n[КОММУНИКАЦИЯ] Попытка связи: {FullName} ({Department}) <-> {colleague.FullName} ({colleague.Department})");
             if (this.Department == colleague.Department)
             {
-                Console.WriteLine(" -> Успех: Быстрая связь внутри одного факультета.");
+                Console.WriteLine("Успех: Быстрая связь внутри одного факультета.");
             }
             else
             {
-                Console.WriteLine(" -> Ошибка гибкости: Слабая горизонтальная связь. Требуется официальная служебная записка через руководителей.");
+                Console.WriteLine("Ошибка гибкости: Слабая горизонтальная связь. Требуется официальная служебная записка через руководителей.");
             }
         }
     }

@@ -24,6 +24,7 @@ namespace SynergyHR
                 if (int.TryParse(Console.ReadLine(), out count) && count >= 0) break;
             }
 
+            /* ПРИЕМ ДАННЫХ */
             for (int i = 0; i < count; i++)
             {
                 Console.WriteLine($"--- Сотрудник {i + 1} ---");
@@ -51,8 +52,8 @@ namespace SynergyHR
                 {
                     Console.Write("Должность: ");
                     position = (Console.ReadLine() ?? "").Trim();
-                    if (!string.IsNullOrWhiteSpace(department)) break;
-                    Console.WriteLine("Ошибка: Укажите факультет или отдел.");
+                    if (!string.IsNullOrWhiteSpace(position)) break;
+                    Console.WriteLine("Ошибка: Укажите должность.");
                 }
 
                 double salary = 0;
@@ -83,14 +84,44 @@ namespace SynergyHR
                 universityStaff.Add(new Worker(name, position, salary, hireDate, department));
             }
 
-            // Вывести всех сотрудников
+            /* ВЫВОД ВСЕХ СОТРУДНИКОВ */
             Console.WriteLine("\n== ВСЕ СОТРУДНИКИ ==");
             foreach (var worker in universityStaff)
             {
                 worker.DisplayInfo();
             }
 
-            // Под кейс-задачу 5
+            /* ПОИСК ПО СТАЖУ */
+            Console.WriteLine("\n== ФИЛЬТР ПО СТАЖУ ==");
+            int thresholdYears = 0;
+            while (true)
+            {
+                Console.Write("Введите минимальный стаж в годах для поиска: ");
+                if (int.TryParse(Console.ReadLine(), out thresholdYears) && thresholdYears >= 0) break;
+                Console.WriteLine("Ошибка: введите корректное число (0 и больше).");
+            }
+
+            Console.WriteLine($"\nРезультаты поиска (сотрудники со стажем более {thresholdYears} лет): ");
+            bool isFound = false;
+
+            foreach (var worker in universityStaff)
+            {
+                var exp = worker.GetExperience();
+
+                if (exp.Years > thresholdYears)
+                {
+                    Console.WriteLine($"- {worker.FullName} (Стаж: {exp.Years} лет, {exp.Months} мес.)");
+                    isFound = true;
+                }
+            }
+
+            if (!isFound)
+            {
+                Console.WriteLine("Ошибка: Работников с таким стажем не найдено.");
+            }
+
+            /* ------------------------------------------------------ */
+            /* КЕЙС-ЗАДАЧА 5 */
             Console.WriteLine("\n== ДЕМО ПРОБЛЕМ ОРГ ПРОЦЕССОВ ==");
             if (universityStaff.Count >= 2) {
                 Worker first = universityStaff[0];
